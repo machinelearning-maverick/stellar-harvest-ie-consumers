@@ -1,0 +1,5 @@
+
+FROM python:3.11-slim AS builder
+WORKDIR /app
+
+CMD ["python", "-m", "stellar_harvest_ie_consumers.consumer"]

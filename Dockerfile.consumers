@@ -1,0 +1,19 @@
+FROM python:3.11-slim AS builder
+WORKDIR /app
+
+RUN --mount=type=secret,id=env \
+    set -o allexport && \
+    . /run/secrets/env && \
+    set +o allexport && \
+    pip install --no-cache-dir \
+      --index-url "$DEVPI_HASEK_DEV_URL" \
+      --extra-index-url https://pypi.org/simple \
+      stellar-harvest-ie-consumers
+
+FROM python:3.11-slim
+WORKDIR  /app
+
+COPY --from=builder /usr/local/lib/python3.11/site-packages/stellar_harvest_ie_consumers \
+                    /usr/local/lib/python3.11/site-packages/stellar_harvest_ie_consumers
+
+CMD ["python", "-m", "stellar_harvest_ie_consumers.consumer"]

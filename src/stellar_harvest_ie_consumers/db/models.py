@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, Float
-from .db import Base
+from .base import Base
 
 
 class KpIndexRecord(Base):

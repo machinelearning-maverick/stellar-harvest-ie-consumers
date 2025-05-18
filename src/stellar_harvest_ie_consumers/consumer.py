@@ -1,8 +1,8 @@
 import asyncio
 from aiokafka import AIOKafkaConsumer
 from .settings import settings
-from .db.db import AsyncSessionLocal
-from .db.entities import KpIndexEntity
+from .db.bootstrap_db import AsyncSessionLocal
+from stellar_harvest_ie_models.stellar.swpc.entities import KpIndexEntity
 from .stream_parsers import parse_planetary_kp_index
 
 

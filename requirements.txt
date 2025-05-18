@@ -1,3 +1,4 @@
+stellar_harvest_ie_models
 aiokafka>=0.8.0
 sqlalchemy[asyncio]>=1.4.0
 asyncpg>=0.26.0

@@ -1,8 +1,8 @@
 import asyncio
 from aiokafka import AIOKafkaConsumer
 from .settings import settings
-from .db.base import AsyncSessionLocal
-from .db.models import KpIndexRecord
+from .db.db import AsyncSessionLocal
+from .db.entities import KpIndexEntity
 from .stream_parsers import parse_planetary_kp_index
 
 
@@ -28,7 +28,7 @@ async def consume_topic(topic: str, parser, model_cls):
 async def main():
     await asyncio.gather(
         consume_topic(
-            settings.kafka_swpc_topic, parse_planetary_kp_index, KpIndexRecord
+            settings.kafka_swpc_topic, parse_planetary_kp_index, KpIndexEntity
         )
     )
 

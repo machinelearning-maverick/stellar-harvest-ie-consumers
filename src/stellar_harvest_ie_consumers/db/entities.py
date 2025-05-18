@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String, DateTime, Float
-from .base import Base
+from .db import Base
 
 
-class KpIndexRecord(Base):
+class KpIndexEntity(Base):
     __tablename__ = "kp_index"
     id = Column(Integer, primary_key=True, index=True)
     time_tag = Column(DateTime, index=True)

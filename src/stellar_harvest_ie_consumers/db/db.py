@@ -8,8 +8,8 @@ Base = declarative_base()
 
 
 async def init_db():
-    # auto-create -> call Base.metadata.create_all(engine)
-    pass
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
 
 async def get_session():

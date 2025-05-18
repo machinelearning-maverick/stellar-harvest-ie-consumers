@@ -39,7 +39,6 @@ async def test_consume_topic_parsees_and_commits(monkeypatch):
 
     fake_consumer = AsyncMock()
     fake_consumer.__aiter__.side_effect = infinite_msgs
-    # fake_consumer.__iter__.return_value = [FakeMsg(sample), FakeMsg(sample)]
 
     monkeypatch.setattr(
         consumer_mod, "AIOKafkaConsumer", lambda *args, **kwargs: fake_consumer
@@ -49,7 +48,8 @@ async def test_consume_topic_parsees_and_commits(monkeypatch):
     class DummyORM:
         def __init__(self, **kwargs):
             self.__dict__.update(kwargs)
-    monkeypatch.setattr(consumer_mod, "KpIndexRecord", DummyORM)
+
+    monkeypatch.setattr(consumer_mod, "KpIndexEntity", DummyORM)
 
     fake_session = AsyncMock()
     fake_session.add = AsyncMock()
@@ -63,15 +63,12 @@ async def test_consume_topic_parsees_and_commits(monkeypatch):
         consume_topic(
             topic="dummy-topic",
             parser=consumer_mod.parse_planetary_kp_index,
-            model_cls=consumer_mod.KpIndexRecord,
+            model_cls=consumer_mod.KpIndexEntity,
         )
     )
 
     await asyncio.sleep(0.2)
-    # try:
     task.cancel()
-    # except Exception as e:
-    # print(f"Exception type: {type(e)}")
 
     with pytest.raises(asyncio.CancelledError):
         await task

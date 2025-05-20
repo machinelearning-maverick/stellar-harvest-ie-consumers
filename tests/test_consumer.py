@@ -2,6 +2,9 @@ import asyncio
 import pytest
 from unittest.mock import AsyncMock
 
+from stellar_harvest_ie_config.logging_config import setup_logging
+setup_logging()
+
 import stellar_harvest_ie_consumers.consumer as consumer_mod
 from stellar_harvest_ie_consumers.consumer import consume_topic
 

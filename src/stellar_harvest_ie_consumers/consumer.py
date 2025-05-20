@@ -1,8 +1,8 @@
 import asyncio
 from aiokafka import AIOKafkaConsumer
 from .settings import settings
-from .db.base import AsyncSessionLocal
-from .db.models import KpIndexRecord
+from stellar_harvest_ie_models.stellar.swpc.entities import KpIndexEntity
+from stellar_harvest_ie_store.db import AsyncSessionLocal
 from .stream_parsers import parse_planetary_kp_index
 
 
@@ -19,7 +19,7 @@ async def consume_topic(topic: str, parser, model_cls):
             data = parser(msg.value)
             async with AsyncSessionLocal() as session:
                 obj = model_cls(**data)
-                session.add(obj)
+                await session.add(obj)
                 await session.commit()
     finally:
         await consumer.stop()
@@ -28,7 +28,7 @@ async def consume_topic(topic: str, parser, model_cls):
 async def main():
     await asyncio.gather(
         consume_topic(
-            settings.kafka_swpc_topic, parse_planetary_kp_index, KpIndexRecord
+            settings.kafka_topic_swpc, parse_planetary_kp_index, KpIndexEntity
         )
     )
 

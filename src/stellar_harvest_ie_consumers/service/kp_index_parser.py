@@ -3,9 +3,11 @@ from datetime import datetime
 
 from stellar_harvest_ie_models.stellar.swpc.entities import KpIndexEntity
 
+from stellar_harvest_ie_config.utils.log_decorators import log_io
 
 class KpIndexConsumerParser:
     @staticmethod
+    @log_io
     def parse(data: Dict) -> KpIndexEntity:
         time_tag_raw = data["time_tag"]
         if isinstance(time_tag_raw, str):

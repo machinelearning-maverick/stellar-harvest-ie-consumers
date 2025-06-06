@@ -1,8 +1,9 @@
 import asyncio
 import pytest
-from unittest.mock import AsyncMock
+from unittest.mock import Mock, AsyncMock, call
 
 from stellar_harvest_ie_config.logging_config import setup_logging
+
 setup_logging()
 
 import stellar_harvest_ie_consumers.consumer as consumer_mod
@@ -48,14 +49,17 @@ async def test_consume_topic_parsees_and_commits(monkeypatch):
     )
     monkeypatch.setattr(consumer_mod, "parse_planetary_kp_index", lambda v: v)
 
-    class DummyORM:
-        def __init__(self, **kwargs):
-            self.__dict__.update(kwargs)
+    class DummyService:
+        def __init__(self, session):
+            self.session = session
 
-    monkeypatch.setattr(consumer_mod, "KpIndexEntity", DummyORM)
+        async def create(self, data: dict):
+            obj = object()
+            self.session.add(obj)
+            await self.session.commit()
 
-    fake_session = AsyncMock()
-    fake_session.add = AsyncMock()
+    fake_session = Mock()
+    fake_session.add = Mock()
     fake_session.commit = AsyncMock()
 
     monkeypatch.setattr(
@@ -65,8 +69,8 @@ async def test_consume_topic_parsees_and_commits(monkeypatch):
     task = asyncio.create_task(
         consume_topic(
             topic="dummy-topic",
-            parser=consumer_mod.parse_planetary_kp_index,
-            model_cls=consumer_mod.KpIndexEntity,
+            parser_func=consumer_mod.parse_planetary_kp_index,
+            consumer_service_cls=DummyService,
         )
     )
 
@@ -78,3 +82,7 @@ async def test_consume_topic_parsees_and_commits(monkeypatch):
 
     assert fake_session.add.call_count == 2
     assert fake_session.commit.call_count == 2
+
+    expected_calls = [call(object()), call(object())]
+    assert len(fake_session.add.mock_calls) == 2
+    assert len(fake_session.commit.mock_calls) == 2

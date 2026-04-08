@@ -1,5 +1,6 @@
-stellar_harvest_ie_models
-stellar_harvest_ie_store
+stellar-harvest-ie-config
+stellar-harvest-ie-models
+stellar-harvest-ie-store
 aiokafka>=0.8.0
 sqlalchemy[asyncio]>=1.4.0
 asyncpg>=0.26.0

@@ -5,10 +5,11 @@ RUN --mount=type=secret,id=env \
     set -o allexport && \
     . /run/secrets/env && \
     set +o allexport && \
-    pip install --no-cache-dir \
-      --index-url "$DEVPI_HASEK_DEV_URL" \
-      --extra-index-url https://pypi.org/simple \
+    pip install --upgrade --no-cache-dir \
+      --extra-index-url "$DEVPI_HASEK_DEV_URL" \
+      --trusted-host host.docker.internal \
       stellar-harvest-ie-consumers
+    # When hosted on VPS - remove '--trusted-host'
 
 FROM python:3.11-slim
 WORKDIR  /app

@@ -37,7 +37,7 @@ async def consume_topic(topic: str, consumer_service_cls):
 @log_io()
 async def main():
     await asyncio.gather(
-        consume_topic(settings.kafka_topic_swpc, KpIndexConsumerService)
+        consume_topic(settings.swpc_topic, KpIndexConsumerService)
     )
 
 

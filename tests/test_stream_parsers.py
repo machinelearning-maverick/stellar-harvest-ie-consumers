@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime
 from pydantic import ValidationError
-from stellar_harvest_ie_consumers.stream_parsers import parse_planetary_kp_index
+from stellar_harvest_ie_consumers.stellar.swpc.stream_parsers import parse_planetary_kp_index
 
 
 @pytest.fixture(scope="class")

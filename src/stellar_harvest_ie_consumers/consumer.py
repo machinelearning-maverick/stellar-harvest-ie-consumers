@@ -2,14 +2,18 @@ import json
 import asyncio
 from aiokafka import AIOKafkaConsumer
 
+from stellar_harvest_ie_config.logging_config import setup_logging
+
+setup_logging()
+
+from stellar_harvest_ie_config.utils.log_decorators import log_io
+
 from stellar_harvest_ie_consumers.settings import settings
 from stellar_harvest_ie_consumers.stellar.swpc.service.kp_index_service import (
     KpIndexConsumerService,
 )
 
 from stellar_harvest_ie_store.db import AsyncSessionLocal
-
-from stellar_harvest_ie_config.utils.log_decorators import log_io
 
 
 @log_io()
@@ -36,9 +40,7 @@ async def consume_topic(topic: str, consumer_service_cls):
 
 @log_io()
 async def main():
-    await asyncio.gather(
-        consume_topic(settings.swpc_topic, KpIndexConsumerService)
-    )
+    await asyncio.gather(consume_topic(settings.swpc_topic, KpIndexConsumerService))
 
 
 if __name__ == "__main__":

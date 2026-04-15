@@ -1,3 +1,4 @@
+import logging
 from typing import Dict, Optional
 from datetime import datetime
 
@@ -5,10 +6,15 @@ from stellar_harvest_ie_models.stellar.swpc.entities import KpIndexEntity
 
 from stellar_harvest_ie_config.utils.log_decorators import log_io
 
+logger = logging.getLogger(__name__)
+
+
 class KpIndexConsumerParser:
     @staticmethod
-    @log_io
+    @log_io()
     def parse(data: Dict) -> KpIndexEntity:
+        logger.debug(f"[DEBUG] parse() received type={type(data)}, value={data!r}")
+
         time_tag_raw = data["time_tag"]
         if isinstance(time_tag_raw, str):
             time_tag = datetime.fromisoformat(time_tag_raw.replace("Z", "+00:00"))

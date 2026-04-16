@@ -24,6 +24,9 @@ dependencies = [
     "stellar-harvest-ie-store",
 ]
 
+[project.scripts]
+run-consumer = "stellar_harvest_ie_consumers.consumer:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["stellar_harvest_ie_consumers*"]

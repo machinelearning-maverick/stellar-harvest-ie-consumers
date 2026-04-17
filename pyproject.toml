@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "stellar_harvest_ie_consumers"
-version = "0.2.0"
+name = "stellar-harvest-ie-consumers"
+version = "0.2.1"
 description = "Kafka-to-Postgres consumer module for the StellarHarvest Insight Engine"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -19,9 +19,10 @@ dependencies = [
     "pydantic>=2.11.0",
     "pydantic-settings>=2.8.0",
     "typer>=0.9.0",
-    "stellar-harvest-ie-config",
-    "stellar-harvest-ie-models",
-    "stellar-harvest-ie-store",
+    "stellar-harvest-ie-config>=0.1.2",
+    "stellar-harvest-ie-models>=0.3.1",
+    "stellar-harvest-ie-stream>=0.1.2",
+    "stellar-harvest-ie-store>=0.1.2",
 ]
 
 [project.scripts]
